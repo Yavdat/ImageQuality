@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -46,13 +47,25 @@ private:
 // Как и говорилось выше, создадим Класс, который будет содержать набор функций
 class Function {
 public:
-    void AddPart(char operation, double value);
-    double Apply(double value) const;
-    void Invert();
+    void AddPart(char operation, double value) {
+        parts.push_back({operation, value});
+    }
+    double Apply(double value) const {
+        for (const FunctionPart& part : parts) {
+            value = part.Apply(value);
+        }
+        return value;
+    }
+    void Invert() {
+        for (FunctionPart& part : parts) { // инвертируем знак каждой операции(меняем + на минус, и наборот)
+            part.Invert();
+        }
+        reverse(begin(parts), end(parts)); // а также меняем последовательность выполнения функций с определенными параметрами
+    };
 private:
     // каждая элементарная операция - это некий объект FunctionPart
     vector<FunctionPart> parts;
-}
+};
 
 Function MakeWeightFunction(const Params& params, const Image& image) {
     // создадим некоторый объект который хотим использовать в ниже приведенных функциях.
@@ -94,5 +107,11 @@ double ComputeQualityByWeigh(const Params& params,
 }
 
 int main() {
+    Image image = {10, 2, 6};
+    Params params = {4, 2, 6};
+    // 10 - 2 * 4 - 2 + 6 * 6 = 36
+
+    cout << ComputeImageWeight(params, image) << endl;
+    cout << ComputeQualityByWeigh(params, image, 46) << endl;
     return 0;
 }
