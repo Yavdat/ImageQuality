@@ -15,6 +15,30 @@ struct Params {
     double c; // т.к добавили новый параметр к изображению
 };
 
+class FunctionPart {
+public:
+    FunctionPart(char new_operation, double new_value) {
+        operation = new_operation;
+        value = new_value;
+    }
+    double Apply(double source_value) const {
+        if (operation == '+') {
+            return source_value + value;
+        } else {
+            return source_value - value;
+        }
+    }
+    void Invert() {
+        if (operation == '+') {
+            operation = '-';
+        } else {
+            operation = '+';
+        }
+    }
+private:
+    char operation;
+    double value;
+};
 // Если у нас есть способ вычисления веса по его 
 // качеству(который неявно дублируется в коде),
 // то мы для этого можем написать класс.
