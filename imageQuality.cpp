@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -17,7 +18,18 @@ struct Params {
 // Если у нас есть способ вычисления веса по его 
 // качеству(который неявно дублируется в коде),
 // то мы для этого можем написать класс.
-// По сути это некоторая функция
+
+// Как и говорилось выше, создадим Класс, который будет содержать набор функций
+class Function {
+public:
+    void AddPart(char operation, double value);
+    double Apply(double value) const;
+    void Invert();
+private:
+    // каждая элементарная операция - это некий объект FunctionPart
+    vector<FunctionPart> parts;
+}
+
 Function MakeWeightFunction(const Params& params, const Image& image) {
     // создадим некоторый объект который хотим использовать в ниже приведенных функциях.
     Function function;
